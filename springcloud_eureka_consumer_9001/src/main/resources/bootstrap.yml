@@ -1,0 +1,13 @@
+spring:
+  cloud:
+    config:
+      uri: http://localhost:20000/
+      name: application-feign
+      label: master
+
+#添加暴露节点 - 告诉SpringBoot哪些监控功能可用
+management:
+  endpoints:
+    web:
+      exposure:
+        include: ['*']

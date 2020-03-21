@@ -1,0 +1,13 @@
+server:
+  port: 8081
+spring:
+  application:
+    name: provider
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:10000/eureka,http://localhost:10001/eureka,http://localhost:10002/eureka
+    #修改提供者的名称显示
+#  instance:
+#    instance-id: client9000
+#    prefer-ip-address: true

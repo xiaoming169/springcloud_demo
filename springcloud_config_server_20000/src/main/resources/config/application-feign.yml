@@ -1,0 +1,45 @@
+server:
+  port: 9001
+spring:
+  application:
+    name: consumer-feign
+eureka:
+  client:
+    service-url:
+      defaultZone: http://www.aaa.com:10000/eureka,http://www.bbb.com:10001/eureka,http://www.ccc.com:10002/eureka
+
+#开启断路器
+feign:
+  hystrix:
+    enabled: true
+
+#Hystrix的相关配置
+hystrix:
+  command:
+    default:
+      execution:
+        #隔离策略,THREAD - 线程池隔离(默认)，  SEMAPHORE - 信号量隔离
+        isolation:
+          strategy: THREAD
+          thread:
+            #调用者的超时时间：默认为1000
+            timeoutInMilliseconds: 1000
+        timeout:
+          #是否开启超时设置，默认为true
+          enabled: true
+
+      #熔断器相关设置
+      circuitBreaker:
+        #是否开启熔断器，默认是true
+        enabled: true
+        #打开熔断器的失败次数
+        requestVolumeThreshold: 2
+        #进入半开状态的时间
+        sleepWindowInMilliseconds: 5000
+
+  #设置线程池大小
+  threadpool:
+    default:
+      coreSize: 1
+com:
+  name: xiaoming

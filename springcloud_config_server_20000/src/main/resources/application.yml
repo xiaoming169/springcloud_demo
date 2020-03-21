@@ -1,0 +1,21 @@
+server:
+  port: 20000
+
+#当前配置中心的文件存放位置
+spring:
+  cloud:
+    config:
+      server:
+        #配置中心文件存放地址为本地
+        native:
+          search-locations: classpath:/config/
+        #远程GitHub地址
+#        git:
+#          uri: https://github.com/xiaoming169/config.git
+  #如果配置文件存放地址为本地，需要配置本地存放
+  profiles:
+    active: native
+
+          #私有仓库用户名和密码
+#          username:
+#          password:

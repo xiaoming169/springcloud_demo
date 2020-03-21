@@ -1,0 +1,51 @@
+server:
+  port: 18000
+
+#应用名称
+spring:
+  application:
+    name: gateway
+  cloud:
+    #路由网关配置
+    gateway:
+      routes:
+        - id: consumer1
+          #转发微服务的路径,负载均衡进行转发
+          uri: lb://CONSUMER-RIBBON
+          #路由规则
+          predicates:
+            - Path=/ribbon/**
+          #过滤器的配置
+          filters:
+            - StripPrefix=1
+        - id: consumer2
+          uri: lb://CONSUMER-FEIGN
+          predicates:
+            - Path=/feign/**
+          filters:
+            - StripPrefix=1
+            #配置限流过滤器
+            - name: RequestRateLimiter
+              args:
+                #限流规则的bean
+                key-resolver: '#{@remoteAddrKeyResolver}'
+                #每秒存放令牌的速率
+                redis-rate-limiter.replenishRate: 1
+                #令牌桶的容量
+                redis-rate-limiter.burstCapacity: 5
+            #配置路由熔断过滤器
+            - name: Hystrix
+              args:
+                name: default
+                fallbackUri: forward:/fallback
+  redis:
+    host: 192.168.57.180
+
+
+
+#注册中心地址
+eureka:
+  client:
+    service-url:
+      defaultZone: http://www.aaa.com:10000/eureka,http://www.bbb.com:10001/eureka,http://www.ccc.com:10002/eureka
+
